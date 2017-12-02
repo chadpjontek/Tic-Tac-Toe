@@ -1,0 +1,20 @@
+* {box-sizing: border-box;}
+.wrapper {
+  max-width: 700px;
+  margin: 15px auto;
+}
+.wrapper > div {
+  border: 2px solid rgb(233,171,88);
+  border-radius: 5px;
+  background-color: rgba(233,171,88,.5);
+  color: #d9480f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5em;
+}.wrapper {
+  display: grid;
+  grid-template-columns: 200px 200px 200px;
+  grid-gap: 10px;
+  grid-auto-rows: 200px 200px 200px;
+}
