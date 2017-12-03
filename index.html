@@ -15,26 +15,25 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="row justify-content-center mt-2">
-      <h1 class="wartext text-center">SHALL WE PLAY A GAME?</h1>
+  <div class="top-wrapper">
+    <div class="header wartext">SHALL WE PLAY A GAME?</div>
+    <div class="xo">
+      <input type="radio" name="xo">
+      <span class="wartext">X</span>
+      <input type="radio" name="xo">
+      <span class="wartext">O</span>
     </div>
-    <div class="row d-flex justify-content-center mt-2">
-      <div class="col-6 d-flex justify-content-center">
-        <input type="radio" name="xo">
-        <span class="wartext mx-2 align-middle">X</span>
-        <input type="radio" name="xo">
-        <span class="wartext mx-2 align-middle">O</span>
-      </div>
-      <div class="col-6 d-flex justify-content-center">
-          <input type="radio" name="difficulty">
-          <span class="wartext mx-2 align-middle">beatable</span>
-          <input type="radio" name="difficulty">
-          <span class="wartext mx-2 align-middle">unbeatable</span>
-        </div>
+    <div class="difficulty">
+      <input type="radio" name="difficulty">
+      <span class="wartext">beatable</span>
+      <input type="radio" name="difficulty">
+      <span class="wartext">unbeatable</span>
+    </div>
+    <div class="start">
+      <button class="start-btn">start</button><span></span>
     </div>
   </div>
-  <div class="wrapper">
+  <div class="board-wrapper">
     <div class="tl">
       <i class="fa fa-circle-o" aria-hidden="true"></i>
     </div>
