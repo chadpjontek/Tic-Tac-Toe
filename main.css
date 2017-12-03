@@ -11,7 +11,7 @@ i {
 }
 * {box-sizing: border-box;}
 .top-wrapper {
-  max-width: 300px;
+  max-width: 320px;
   margin: 15px auto;
 }
 .top-wrapper > div {
@@ -74,7 +74,7 @@ i {
   }
 }
 .board-wrapper {
-  max-width: 300px;
+  max-width: 320px;
   margin: 15px auto;
 }
 .board-wrapper > div {
