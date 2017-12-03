@@ -8,21 +8,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- CSS -->
   <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
+  <div class="container">
+    <div class="row justify-content-center mt-2">
+      <h1 class="wartext text-center">SHALL WE PLAY A GAME?</h1>
+    </div>
+    <div class="row d-flex justify-content-center mt-2">
+      <div class="col-6 d-flex justify-content-center">
+        <input type="radio" name="xo">
+        <span class="wartext mx-2 align-middle">X</span>
+        <input type="radio" name="xo">
+        <span class="wartext mx-2 align-middle">O</span>
+      </div>
+      <div class="col-6 d-flex justify-content-center">
+          <input type="radio" name="difficulty">
+          <span class="wartext mx-2 align-middle">beatable</span>
+          <input type="radio" name="difficulty">
+          <span class="wartext mx-2 align-middle">unbeatable</span>
+        </div>
+    </div>
+  </div>
   <div class="wrapper">
-    <div class="tl">tl</div>
-    <div class="tc">tc</div>
-    <div class="tr">tr</div>
-    <div class="ml">ml</div>
-    <div class="mc">mc</div>
-    <div class="mr">mr</div>
-    <div class="bl">bl</div>
-    <div class="bc">bc</div>
-    <div class="br">br</div>
+    <div class="tl">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
+    <div class="tc">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
+    <div class="tr">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
+    <div class="ml">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    <div class="mc">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    <div class="mr">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    <div class="bl">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
+    <div class="bc">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
+    <div class="br">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
   </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
