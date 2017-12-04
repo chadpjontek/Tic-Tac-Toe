@@ -60,6 +60,12 @@ function selectSquare(square) {
     squares = squares.filter(function (val) {
       return val !== square;
     });
+    // check for draw
+    if (squares.length < 1) {
+      $('.start').html('<button class="start-btn" onclick="start();">Draw. -- start</button><span></span>');
+      isGameOver = true;
+      return;
+    }
     isPlayerTurn = false;
     selectSquare();
   } else {
@@ -77,6 +83,12 @@ function selectSquare(square) {
     squares = squares.filter(function (val) {
       return val !== squares[randomSquare];
     });
+    // check for draw
+    if (squares.length < 1) {
+      $('.start').html('<button class="start-btn" onclick="start();">Draw. -- start</button><span></span>');
+      isGameOver = true;
+      return;
+    }
     isPlayerTurn = true;
   }
 }
