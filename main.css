@@ -1,5 +1,7 @@
 body {
-  background-color: #171219; 
+  background-color: hsl(283, 16%, 8%); 
+  line-height: 1.5;
+  margin: 0px;
 }
 i {
   text-shadow: 1px 1px 30px #9af8ff;
@@ -44,7 +46,8 @@ i {
 .start {
   grid-column: 1/5;
 }
-.start-btn {
+.start, .start-btn {
+  padding: 0px;
   color: #9af8ff;
   text-shadow: 1px 1px 30px #9af8ff;
   font-family: "Wargames Regular";
@@ -74,7 +77,8 @@ i {
   }
 }
 .board-wrapper {
-  max-width: 320px;
+  width: 320px;
+  height: 320px;
   margin: 15px auto;
 }
 .board-wrapper > div {
@@ -89,9 +93,9 @@ i {
 }
 .board-wrapper {
   display: grid;
-  grid-template-columns: 100px 100px 100px;
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
-  grid-auto-rows: 100px 100px 100px;
+  grid-template-rows: repeat(3, 1fr);
 }
 /* local fonts */
 @font-face {

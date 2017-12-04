@@ -10,7 +10,7 @@
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
     crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="main.css">
 </head>
 
@@ -18,55 +18,55 @@
   <div class="top-wrapper">
     <div class="header wartext">SHALL WE PLAY A GAME?</div>
     <div class="xo">
-      <input type="radio" name="xo">
+      <input type="radio" name="xo" id="x" checked>
       <span class="wartext">X</span>
-      <input type="radio" name="xo">
+      <input type="radio" name="xo" id="o">
       <span class="wartext">O</span>
     </div>
     <div class="difficulty">
-      <input type="radio" name="difficulty">
+      <input type="radio" name="difficulty" id="beatable" checked>
       <span class="wartext">beatable</span>
-      <input type="radio" name="difficulty">
+      <input type="radio" name="difficulty" id="unbeatable">
       <span class="wartext">unbeatable</span>
     </div>
     <div class="start">
-      <button class="start-btn">start</button><span></span>
+      <button class="start-btn" onclick="start();">start</button><span></span>
     </div>
   </div>
   <div class="board-wrapper">
-    <div class="tl">
-      <i class="fa fa-circle-o" aria-hidden="true"></i>
-    </div>
-    <div class="tc">
-      <i class="fa fa-circle-o" aria-hidden="true"></i>
-    </div>
-    <div class="tr">
-      <i class="fa fa-circle-o" aria-hidden="true"></i>
-    </div>
-    <div class="ml">
+    <div id="tl" onclick="selectSquare('tl');">
       <i class="fa fa-times" aria-hidden="true"></i>
     </div>
-    <div class="mc">
+    <div id="tc" onclick="selectSquare('tc');">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
+    <div id="tr" onclick="selectSquare('tr');">
       <i class="fa fa-times" aria-hidden="true"></i>
     </div>
-    <div class="mr">
+    <div id="ml" onclick="selectSquare('ml');">
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    </div>
+    <div id="mc" onclick="selectSquare('mc');">
       <i class="fa fa-times" aria-hidden="true"></i>
     </div>
-    <div class="bl">
+    <div id="mr" onclick="selectSquare('mr');">
       <i class="fa fa-circle-o" aria-hidden="true"></i>
     </div>
-    <div class="bc">
+    <div id="bl" onclick="selectSquare('bl');">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    <div id="bc" onclick="selectSquare('bc');">
       <i class="fa fa-circle-o" aria-hidden="true"></i>
     </div>
-    <div class="br">
-      <i class="fa fa-circle-o" aria-hidden="true"></i>
+    <div id="br" onclick="selectSquare('br');">
+      <i class="fa fa-times" aria-hidden="true"></i>
     </div>
   </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script> -->
   <script src="main.js"></script>
 </body>
 
