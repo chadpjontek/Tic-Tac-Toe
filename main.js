@@ -7,8 +7,9 @@ var aiSquares = [];
 var winConditions = [['tl', 'tc', 'tr'], ['ml', 'mc', 'mr'], ['bl', 'bc', 'br'], ['tl', 'ml', 'bl'], ['tc', 'mc', 'bc'], ['tr', 'mr', 'br'], ['tl', 'mc', 'br'], ['tr', 'mc', 'bl']];
 var isGameOver = true;
 function start() {
-  playerIsX = undefined;;
-  isPlayerTurn = undefined;;
+  playerIsX = undefined;
+  isPlayerTurn = undefined;
+  squares = ['tl', 'tc', 'tr', 'ml', 'mc', 'mr', 'bl', 'bc', 'br'];
   playerSquares = [];
   aiSquares = [];
   isGameOver = false;
