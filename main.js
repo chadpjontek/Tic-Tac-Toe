@@ -6,6 +6,14 @@ var playerSquares = [];
 var aiSquares = [];
 var winConditions = [['tl', 'tc', 'tr'], ['ml', 'mc', 'mr'], ['bl', 'bc', 'br'], ['tl', 'ml', 'bl'], ['tc', 'mc', 'bc'], ['tr', 'mr', 'br'], ['tl', 'mc', 'br'], ['tr', 'mc', 'bl']];
 var isGameOver = true;
+var startSound = {
+  sound: new Howl({
+    src: ['shall-we-play-a-game.mp3']
+  })
+};
+$(document).ready(function () {
+  startSound.sound.play();
+})
 function start() {
   playerIsX = undefined;
   isPlayerTurn = undefined;
@@ -50,7 +58,6 @@ function selectSquare(square) {
   // make sure square clicked is not already taken
   if (isPlayerTurn) {
     if (!squares.includes(square)) {
-      $('.start').html('Square taken. Choose another. <span></span>');
       return;
     }
     if (playerIsX) {
