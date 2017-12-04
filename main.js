@@ -32,10 +32,10 @@ function start() {
   // X goes first
   if (playerIsX) {
     isPlayerTurn = true;
-    // $('.start').html('You\'re move <span></span>');
+    $('.start').html('You\'re turn <span></span>');
   } else {
     isPlayerTurn = false;
-    // $('.start').html('Computer\'s move <span></span>');
+    $('.start').html('Computer\'s turn <span></span>');
     selectSquare();
   }
 }
@@ -43,10 +43,16 @@ function clearBoard() {
   $('#tl, #tc, #tr, #ml, #mc, #mr, #bl, #bc, #br').html('');
 }
 function selectSquare(square) {
+  // make board unclickable if it's not player's turn or game is over
   if (isPlayerTurn === undefined || isGameOver === true) {
     return;
   }
+  // make sure square clicked is not already taken
   if (isPlayerTurn) {
+    if (!squares.includes(square)) {
+      $('.start').html('Square taken. Choose another. <span></span>');
+      return;
+    }
     if (playerIsX) {
       $('#' + square).html('<i class="fa fa-times" aria-hidden="true"></i>');
     } else {
@@ -67,7 +73,10 @@ function selectSquare(square) {
       return;
     }
     isPlayerTurn = false;
-    selectSquare();
+    $('.start').html('Computer\'s turn <span></span>');
+    setTimeout(function () {
+      selectSquare();
+    }, 1000);
   } else {
     let randomSquare = Math.floor(Math.random() * squares.length);
     if (!playerIsX) {
@@ -90,6 +99,7 @@ function selectSquare(square) {
       return;
     }
     isPlayerTurn = true;
+    $('.start').html('You\'re turn <span></span>');
   }
 }
 function checkForWin() {
