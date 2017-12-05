@@ -5,7 +5,7 @@ body {
 }
 i {
   text-shadow: 1px 1px 30px #9af8ff;
-  animation: scaleIn 1s ease-out;
+  animation: scaleIn .8s ease-out;
 }
 @keyframes scaleIn {
   0% {
