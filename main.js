@@ -1,43 +1,33 @@
-// vars
-var playerIsX;
-var isPlayerTurn;
+// globals
+var ai = "O";
+var human = "X";
+var board;
 var isBeatable = true;
-var squares = ['tl', 'tc', 'tr', 'ml', 'mc', 'mr', 'bl', 'bc', 'br'];
-var playerSquares = [];
-var aiSquares = [];
-var winConditions = [['tl', 'tc', 'tr'], ['ml', 'mc', 'mr'], ['bl', 'bc', 'br'], ['tl', 'ml', 'bl'], ['tc', 'mc', 'bc'], ['tr', 'mr', 'br'], ['tl', 'mc', 'br'], ['tr', 'mc', 'bl']];
-var isGameOver = true;
-var filteredCondition = [];
-var winningSquare = "";
-var winningSquareBlock = "";
-var randomSquare = "";
-var possibleBlocks = [];
-var blockCount = {};
-var maxBlocks = 0;
-var bestBlock;
-var startSound = {
+var isPlayerTurn = true;
+var isGameOver = false;
+const winConditions = [[0, 1, 2],
+[3, 4, 5],
+[6, 7, 8],
+[0, 3, 6],
+[1, 4, 7],
+[2, 5, 8],
+[0, 4, 8],
+[6, 4, 2]
+];
+const startSound = {
   sound: new Howl({
     src: ['shall-we-play-a-game.mp3']
   })
 };
+
 $(document).ready(function () {
   startSound.sound.play();
 })
+
 function start() {
-  playerIsX = undefined;
-  isPlayerTurn = undefined;
-  squares = ['tl', 'tc', 'tr', 'ml', 'mc', 'mr', 'bl', 'bc', 'br'];
-  playerSquares = [];
-  aiSquares = [];
-  isGameOver = false;
-  filteredCondition = [];
-  winningSquare = "";
-  winningSquareBlock = "";
-  randomSquare = "";
-  possibleBlocks = [];
-  blockCount = {};
-  maxBlocks = 0;
-  bestBlock = "";
+  // create new board
+  board = Array.from(Array(9).keys());
+  clearBoard();
   // set difficulty
   if ($('#beatable').prop('checked')) {
     isBeatable = true;
@@ -46,207 +36,173 @@ function start() {
   }
   // determine start player
   if ($('#x').prop('checked')) {
-    playerIsX = true;
+    ai = "O";
+    human = "X";
   } else {
-    playerIsX = false;
+    ai = "X";
+    human = "O";
   }
   // begin game
   $(".start-btn").hide();
-  clearBoard();
+  isGameOver = false;
   // X goes first
-  if (playerIsX) {
-    isPlayerTurn = true;
-    $('.start').html('You\'re turn <span></span>');
+  if (ai === 'O') {
+    playerTurn();
   } else {
-    isPlayerTurn = false;
-    $('.start').html('Computer\'s turn <span></span>');
-    selectSquare();
-  }
-}
-function clearBoard() {
-  $('#tl, #tc, #tr, #ml, #mc, #mr, #bl, #bc, #br').html('');
-}
-function selectSquare(square) {
-  // make board unclickable if it's not player's turn or game is over
-  if (isPlayerTurn === undefined || isGameOver === true) {
-    return;
-  }
-  if (isPlayerTurn) {
-    // make sure square clicked is not already taken
-    if (!squares.includes(square)) {
-      return;
-    }
-    drawCircleOrX(square);
-    playerSquares.push(square);
-    checkForWin();
-    if (isGameOver) {
-      return;
-    }
-    squares = squares.filter(function (val) {
-      return val !== square;
-    });
-    if (checkForDraw()) {
-      return;
-    }
     aiTurn();
-  } else {
-    // computer's turn
+  }
+}
+
+function clearBoard() {
+  $('#0, #1, #2, #3, #4, #5, #6, #7, #8').html('');
+  $('#board > div').css('background-color', "#1d2446");
+}
+
+function playerTurn() {
+  $('.start').html('You\'re turn <span></span>');
+}
+
+function aiTurn() {
+  // give the illusion of computer thinking with a timeout
+  isPlayerTurn = false;
+  $('.start').html('Computer\'s turn (thinking...) <span></span>');
+  setTimeout(function () {
     if (isBeatable) {
-      pickRandomSquare();
+      turn(pickRandomSquare(), ai);
+      isPlayerTurn = true;
     } else {
-      // unbeatable ai
-      if (playerIsX && squares.length === 8) {
-        var corners = ['tl', 'tr', 'bl', 'br'];
-        var sides = ['tc', 'ml', 'mr', 'bc'];
-        if (corners.indexOf(playerSquares[0]) > -1) {
-          aiMoveProcess('mc');
-          return;
-        } else if (sides.indexOf(playerSquares[0]) > -1) {
-          switch (playerSquares[0]) {
-            case 'tc':
-            case 'ml': aiMoveProcess('tl');
-              break;
-            case 'mr':
-            case 'bc': aiMoveProcess('br');
-              break;
-          }
-          return;
-        } else {
-          aiMoveProcess('tl');
-          return;
-        }
-        return;
-      }
-      // Check each win condition and if win possible, pick that square.
-      for (let condition of winConditions) {
-        filteredCondition = condition.filter(square => aiSquares.indexOf(square) < 0);
-        if (filteredCondition.length === 1) {
-          if (playerSquares.indexOf(filteredCondition[0]) < 0) {
-            winningSquare = squares[squares.indexOf(filteredCondition[0])];
-            aiMoveProcess(winningSquare);
-            break;
-          }
-        }
-      }
-      if (isGameOver) {
-        return;
-      }
-      // Check each win condition for player and block
-      for (let condition of winConditions) {
-        filteredCondition = condition.filter(square => playerSquares.indexOf(square) < 0);
-        if (filteredCondition.length === 1) {
-          if (aiSquares.indexOf(filteredCondition[0]) < 0) {
-            winningSquareBlock = squares[squares.indexOf(filteredCondition[0])];
-            squares = squares.filter(val => val !== winningSquareBlock);
-            aiMoveProcess(winningSquareBlock);
-            break;
-          }
-        }
-      }
-      if (isPlayerTurn) {
-        return;
-      }
-      // Pick square with highest block count
-      possibleBlocks = [];
-      blockCount = {};
-      maxBlocks = 0;
-      bestBlock = "";
-      for (let condition of winConditions) {
-        filteredCondition = condition.filter(square => playerSquares.indexOf(square) < 0);
-        if (filteredCondition.length === 2) {
-          possibleBlocks.push(filteredCondition);
-        }
-      }
-      possibleBlocks = possibleBlocks.reduce((acc, cur) => acc.concat(cur),
-        []
-      );
-      for (var v in possibleBlocks) {
-        blockCount[possibleBlocks[v]] = (blockCount[possibleBlocks[v]] || 0) + 1;
-        if (blockCount[possibleBlocks[v]] > maxBlocks) {
-          maxBlocks = blockCount[possibleBlocks[v]];
-          bestBlock = possibleBlocks[v];
-        }
-      }
-      squares = squares.filter(val => val !== bestBlock);
-      aiMoveProcess(bestBlock);
-      if (isPlayerTurn) {
-        return;
-      }
-      // Pick random square
-      pickRandomSquare();
+      turn(bestSpot(), ai);
+      isPlayerTurn = true;
+    }
+  }, 800);
+}
+
+function squareClick(square) {
+  // make board unclickable if game is over or not player's turn
+  if (isGameOver || !isPlayerTurn) {
+    return;
+  }
+  if (typeof board[square] == 'number') {
+    turn(square, human);
+    if (!checkWin(board, human) && !checkTie()) {
+      aiTurn();
     }
   }
 }
-function checkForWin() {
-  if (isPlayerTurn) {
-    for (let condition of winConditions) {
-      let win = condition.every(function (val) {
-        return playerSquares.indexOf(val) > -1;
-      });
-      if (win) {
-        $('.start').html('<button class="start-btn" onclick="start();">You win! -- start</button><span></span>');
-        isGameOver = true;
-        break;
-      }
-    }
-    return;
+
+function pickRandomSquare() {
+  let openSqrs = emptySquares();
+  return openSqrs[Math.floor(Math.random() * openSqrs.length)];
+}
+
+function emptySquares() {
+  return board.filter(sqr => typeof sqr == 'number');
+}
+
+function turn(square, player) {
+  board[square] = player;
+  drawCircleOrX(square, player);
+  let victory = checkWin(board, player);
+  if (victory) {
+    gameOver(victory);
+  } else if (checkTie()) {
+    $('.start').html('<button class="start-btn" onclick="start();">Draw. -- start</button><span></span>');
+    $('#board > div').css('background-color', "purple");
   } else {
-    for (let condition of winConditions) {
-      let win = condition.every(function (val) {
-        return aiSquares.indexOf(val) > -1;
-      });
-      if (win) {
-        $('.start').html('<button class="start-btn" onclick="start();">You lose. Try again. -- start</button><span></span>');
-        isGameOver = true;
-        break;
-      }
+    if (!isPlayerTurn) {
+      playerTurn();
     }
-    return;
   }
 }
-function drawCircleOrX(square) {
-  if ((playerIsX && isPlayerTurn) || (!playerIsX && !isPlayerTurn)) {
-    // draw an X in square
+
+function drawCircleOrX(square, player) {
+  if (player === 'X') {
     $('#' + square).html('<i class="fa fa-times" aria-hidden="true"></i>');
   } else {
-    // draw an O in square
     $('#' + square).html('<i class="fa fa-circle-o" aria-hidden="true"></i>');
   }
 }
-function checkForDraw() {
-  if (squares.length < 1) {
-    $('.start').html('<button class="start-btn" onclick="start();">Draw. -- start</button><span></span>');
-    isGameOver = true;
+
+function checkWin(board, player) {
+  let moves = board.reduce((acc, cur, i) => cur === player ? acc.concat(i) : acc, []);
+  let victory = null;
+  for (let [index, condition] of winConditions.entries()) {
+    if (condition.every(sqr => moves.indexOf(sqr) > -1)) {
+      victory = { index: index, player: player };
+      break;
+    }
+  }
+  return victory;
+}
+
+function gameOver(victory) {
+  for (let index of winConditions[victory.index]) {
+    victory.player == human ? $('#' + index).css('background-color', "blue") : $('#' + index).css('background-color', "red");
+  }
+  declareWinner(victory.player);
+  isGameOver = true;
+}
+
+function declareWinner(who) {
+  if (who === human) {
+    $('.start').html('<button class="start-btn" onclick="start();">You win! -- start</button><span></span>');
+  } else {
+    $('.start').html('<button class="start-btn" onclick="start();">You lose. Try again. -- start</button><span></span>');
+  }
+}
+
+function checkTie() {
+  if (emptySquares().length == 0) {
     return true;
   }
+  return false;
 }
-function playerTurn() {
-  isPlayerTurn = true;
-  $('.start').html('You\'re turn <span></span>');
+
+function bestSpot() {
+  return minimax(board, ai).index;
 }
-function aiTurn() {
-  isPlayerTurn = false;
-  $('.start').html('Computer\'s turn <span></span>');
-  setTimeout(function () {
-    selectSquare();
-  }, 800);
-}
-function pickRandomSquare() {
-  randomSquare = squares[Math.floor(Math.random() * squares.length)];
-  aiMoveProcess(randomSquare);
-}
-function aiMoveProcess(square) {
-  drawCircleOrX(square);
-  aiSquares.push(square);
-  checkForWin();
-  if (isGameOver) {
-    return;
+
+function minimax(futureBoard, player) {
+  let openSqrs = emptySquares(futureBoard);
+  if (checkWin(futureBoard, human)) {
+    return { score: -10 };
+  } else if (checkWin(futureBoard, ai)) {
+    return { score: 10 };
+  } else if (openSqrs.length === 0) {
+    return { score: 0 };
   }
-  squares = squares.filter(function (val) {
-    return val !== square;
-  });
-  if (checkForDraw()) {
-    return;
+  let moves = [];
+  for (let i = 0; i < openSqrs.length; i++) {
+    let move = {};
+    move.index = futureBoard[openSqrs[i]];
+    futureBoard[openSqrs[i]] = player;
+    if (player == ai) {
+      let result = minimax(futureBoard, human);
+      move.score = result.score;
+    } else {
+      let result = minimax(futureBoard, ai);
+      move.score = result.score;
+    }
+    futureBoard[openSqrs[i]] = move.index;
+    moves.push(move);
   }
-  playerTurn();
+  let bestMove;
+  if (player === ai) {
+    let bestScore = -10000;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+    let bestScore = 10000;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+  return moves[bestMove];
 }
