@@ -5,15 +5,30 @@ body {
 }
 i {
   text-shadow: 1px 1px 30px #9af8ff;
-  animation: scaleIn .8s ease-out;
+  -webkit-animation: scaleIn .8s ease-out;
+          animation: scaleIn .8s ease-out;
 }
-@keyframes scaleIn {
+@-webkit-keyframes scaleIn {
   0% {
-    transform: scale(5,5);
+    -webkit-transform: scale(5,5);
+            transform: scale(5,5);
     opacity: 0;
   }
   100% {
-    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+            transform: scale(1,1);
+    opacity: 1;
+  }
+}
+@keyframes scaleIn {
+  0% {
+    -webkit-transform: scale(5,5);
+            transform: scale(5,5);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: scale(1,1);
+            transform: scale(1,1);
     opacity: 1;
   }
 }
@@ -22,16 +37,22 @@ i {
   text-shadow: 1px 1px 30px #9af8ff;
   font-family: "Wargames Regular";
 }
-* {box-sizing: border-box;}
+* {-webkit-box-sizing: border-box;box-sizing: border-box;}
 .top-wrapper {
   max-width: 320px;
   margin: 15px auto;
 }
 .top-wrapper > div {
   color: #9af8ff;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 .top-wrapper {
   display: grid;
@@ -71,7 +92,22 @@ i {
   text-shadow: 1px 1px 30px #9af8ff;
   width: .6rem;
   height: 1.2rem;
-  animation: blinking 1500ms infinite;
+  -webkit-animation: blinking 1500ms infinite;
+          animation: blinking 1500ms infinite;
+}
+@-webkit-keyframes blinking {
+  0% {
+    background-color: #9af8ff;
+    text-shadow: 1px 1px 30px #9af8ff;
+  }
+  50% {
+    background-color: #171219;
+    text-shadow: 1px 1px 30px #171219;
+  }
+  100% {
+    background-color: #9af8ff;
+    text-shadow: 1px 1px 30px #9af8ff;
+  }
 }
 @keyframes blinking {
   0% {
@@ -97,9 +133,15 @@ i {
   border-radius: 5px;
   background-color: #1d2446;
   color: #9af8ff;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   font-size: 5em;
 }
 .board-wrapper {
